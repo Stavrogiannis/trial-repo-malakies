@@ -8,12 +8,13 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* basename="/dashboad/50" */}
-    <BrowserRouter >
+    {/* basename="/dashboard/50" */}
+    <BrowserRouter basename="/dashboard/50">
       <Routes>
-        <Route path="/dashboard/50" element={<App />} />
+        <Route path="*" element={<App />} />
       </Routes>
     </BrowserRouter>
+    {/* <App/> */}
   </React.StrictMode>
 );
 
