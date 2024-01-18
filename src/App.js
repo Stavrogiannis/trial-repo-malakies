@@ -136,7 +136,9 @@ function App() {
       chosenMonthsAnalysis = []
       console.log(dataAnalysis)
       //https://demo4-svc.default.svc.cluster.local:5000/analysis
-      await fetch('api/analysis', {
+      //http://demo4-svc.ai4pp.svc.cluster.local:5000/analysis
+      // /api/analysis
+      await fetch('https://vpme.fedcloud-tf.fedcloud.eu/dashboard-51/analysis', {
         headers: { "Content-Type": "application/json" },
         method: 'POST',
         body: JSON.stringify(dataAnalysis),
@@ -284,7 +286,8 @@ function App() {
     console.log(dataSuggestions, chosenMonthsSuggest)
     // clear all arrays and objects
     chosenMonthsSuggest = [];
-    await fetch(`api/suggestion/${suggetionUrlMonth}`, {
+    // await fetch(`api/suggestion/${suggetionUrlMonth}`, {
+    await fetch(`https://vpme.fedcloud-tf.fedcloud.eu/dashboard-51/suggestion/${suggetionUrlMonth}`, {
       headers: { "Content-Type": "application/json" },
       method: 'POST',
       body: JSON.stringify(dataSuggestions),
