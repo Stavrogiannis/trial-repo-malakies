@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-dash-nicosia-parking
+  labels:
+    app: front-dash-nicosia-parking
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-dash-nicosia-parking
+  template:
+    metadata:
+      labels:
+        app: front-dash-nicosia-parking
+    spec:
+      containers:
+      - image: louait/ai4pp-dashboard-v15
+        name: front-dash-nicosia-parking-container
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-dash-nicosia-parking-svc
+spec:
+  selector:
+    app: front-dash-nicosia-parking
+  ports:
+  - port: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nicosia-parking-back-dash
+  labels:
+    app: nicosia-parking-back-dash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nicosia-parking-back-dash
+  template:
+    metadata:
+      labels:
+        app: nicosia-parking-back-dash
+    spec:
+      containers:
+      - image: thanooos/nicosia-parking-api:latest
+        name: nicosia-parking-back-dash-container
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nicosia-parking-back-dash-svc
+spec:
+  selector:
+    app: nicosia-parking-back-dash
+  ports:
+  - port: 5000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx 
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/preserve-trailing-slash: "false"
+    #nginx.ingress.kubernetes.io/server-snippet: "rewrite ^/dashboard/50$ /dashboard/50/ permanent;"
+    #nginx.ingress.kubernetes.io/configuration-snippet: "rewrite ^/dashboard/50$ /dashboard/50/ permanent;"
+    #nginx.ingress.kubernetes.io/app-root: /dashboard
+    cert-manager.io/cluster-issuer : "letsencrypt-prod"
+  name: front-dash-nicosia-parking-ingress  
+spec:
+  tls:
+  - hosts:
+    - vpme.fedcloud-tf.fedcloud.eu
+    secretName: acme-tls-vpme
+  rules:
+  - host: vpme.fedcloud-tf.fedcloud.eu
+    http:
+      paths:
+        - pathType: Prefix
+          path: /dashboard/53(/|$)(.*) 
+          backend:
+            service:
+              name: front-dash-nicosia-parking-svc
+              port:
+                number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx 
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    #nginx.ingress.kubernetes.io/preserve-trailing-slash: "false"
+    cert-manager.io/cluster-issuer : "letsencrypt-prod"
+  name: nicosia-parking-back-dash-ingress
+spec:
+  tls:
+  - hosts:
+    - vpme.fedcloud-tf.fedcloud.eu
+    secretName: acme-tls-vpme
+  rules:
+  - host: vpme.fedcloud-tf.fedcloud.eu
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/dashboard-nicosia-parking(/|$)(.*)"
+          backend:
+            service:
+              name: nicosia-parking-back-dash-svc
+              port:
+                number: 5000
