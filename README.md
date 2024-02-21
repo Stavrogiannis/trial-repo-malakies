@@ -12,7 +12,11 @@ add in the package.json
 # use the Nginx.conf
 as is parameterize for your specific path/subdomain
 
+# use the K8 file
+example to be parameterized according to your needs can be found here: intra-nicosia-parking-dashboard 2.yml
+
 # DockerFile
 use as is
+
 
 
