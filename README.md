@@ -3,11 +3,8 @@
 # React Part
 add BrowserRouter
 use it as such 
- <BrowserRouter basename="/dashboard/50">
-      <Routes>
-        <Route path="*" element={<App />} />
-      </Routes>
-</BrowserRouter>
+![image](https://github.com/Stavrogiannis/trial-repo-malakies/assets/112877493/5914f14c-2c4d-4957-a94f-a293f25d7f94)
+
 
 add in the package.json
 "homepage":"."
