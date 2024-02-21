@@ -18,5 +18,10 @@ example to be parameterized according to your needs can be found here: intra-nic
 # DockerFile
 use as is
 
+# General
+The above project assumes that the K8 deployes 
+1-backend instance which is exposed 
+2-front end instance which is exposed and communicates with the above back-end service 
+
 
 
